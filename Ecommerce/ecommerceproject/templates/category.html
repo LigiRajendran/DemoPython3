@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+   {% if category %}
+      {{ category.description|truncatewords:155 }}
+   {% else %}
+      Welcome to Silly Billy kids world
+    {% endif %}
+{% endblock %}
+{% block title %}
+  {% if category %}
+      {{category.name}} -Silly Billy
+   {% else %}
+      See our new collections
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if category %}
+      <div>
+        <div class="row my_row_class">
+            <div class="mx_auto">
+          <p>
+            <a href="{% url 'shop:allProdCat' %}">Our Product Collection</a>
+          </p>
+                </div>
+        </div>
+      </div>
+    {% endif %}
+<div class="mx_auto">
+  <div>
+    {% if category %}
+
+    <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}">
+  </div>
+
+  <br>
+  <div>
+  <h1 class="text-center"> {{category.name}}</h1>
+    <p class="text-justify">{{category.description}}</p>
+  </div>
+   {% else %}
+    </div>
+    <div>
+      <img class="my_image" src="{% static 'img/banner.png' %}" alt="our products">
+
+    </div>
+    <br>
+    <div>
+      <h1  class="text-center my_title"> Our Product Collection</h1>
+      <p class="text-justify"> Always new  with plenty of collections</p>
+    </div>
+    {% endif %}
+<div>
+  <div class="container" >
+      <div class=" row mx_auto">
+    {% for product in products %}
+    <div class="my_bottom_margin col-9 col-sm-12 col-md-4 xol-lg-4">
+      <div class="card text.center" style="max-width: 18 rem;">
+
+          <div class="card-body">
+        <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}"></a>
+        <div>
+
+
+            <h4>{{product.name}}</h4>
+            <p>{{product.price}}</p>
+          </div>
+
+
+        </div>
+
+      </div>
+
+        </div>
+          {% endfor %}
+    </div>
+      <div class=mx_auto">
+          {% if products.paginator_num_pages > 1 %}
+          <hr>
+          <div class="text-center">
+              {% for pg in products.paginator.page_range %}
+              <a href="?pge={{pg}}" class="btn btn_light btn_sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+              {% endfor %}
+
+          </div>
+          {% endif %}
+      </div>
+  </div>
+
+</div>
+{% endblock %}
